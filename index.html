@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito+Sans:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     EDIT ME — quick customization guide
+     - Her name: search for "Riley" below (in the HTML body) and
+       replace every instance with her actual name.
+     - Photo captions: search for "caption text" in the polaroid
+       section and replace with your own.
+     - The wish message: search for "WISH_MESSAGE" in the <script>
+       at the bottom and edit the text.
+     - The closing note: search for "CLOSING_MESSAGE" in the HTML
+       body and edit the paragraph.
+     - Photos: drop files into the /images folder named
+       memory1.jpg, memory2.jpg, memory3.jpg, memory4.jpg, memory5.jpg
+       (any aspect ratio works — they'll be cropped to fit). If a
+       photo is missing, a friendly placeholder shows instead, so
+       nothing breaks if you only have 2 or 3 pictures.
+     ============================================================ */
+
+  :root{
+    --pink: #FF6F91;
+    --tangerine: #FFA630;
+    --turquoise: #2EC4B6;
+    --grape: #7B2CBF;
+    --cream: #FFFCF5;
+    --ink: #241623;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Nunito Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2{
+    font-family: 'Baloo 2', cursive;
+    margin: 0;
+  }
+
+  .eyebrow{
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grape);
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 2px solid var(--grape);
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+    background: radial-gradient(circle at 30% 20%, #FFE8B0 0%, var(--cream) 55%);
+  }
+
+  .confetti-piece{
+    position: absolute;
+    top: -5vh;
+    width: 10px;
+    height: 16px;
+    opacity: 0.9;
+    animation: fall linear infinite;
+    border-radius: 2px;
+  }
+
+  @keyframes fall{
+    0%   { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  .balloon{
+    position: absolute;
+    bottom: -20vh;
+    width: 60px;
+    height: 76px;
+    border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+    animation: rise linear infinite;
+    box-shadow: inset -8px -8px 0 rgba(0,0,0,0.06);
+  }
+  .balloon::after{
+    content:'';
+    position:absolute;
+    bottom:-22px;
+    left:50%;
+    width:1px;
+    height:24px;
+    background: rgba(36,22,35,0.25);
+  }
+
+  @keyframes rise{
+    0%   { transform: translateY(0) translateX(0); }
+    50%  { transform: translateY(-60vh) translateX(20px); }
+    100% { transform: translateY(-125vh) translateX(-10px); }
+  }
+
+  .headline{
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    position: relative;
+    z-index: 2;
+  }
+
+  .headline .name{
+    color: var(--pink);
+    -webkit-text-stroke: 2px var(--ink);
+    display: inline-block;
+    transform: rotate(-2deg);
+  }
+
+  .subtitle{
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: var(--ink);
+    opacity: 0.75;
+    position: relative;
+    z-index: 2;
+  }
+
+  .scroll-hint{
+    position: absolute;
+    bottom: 2rem;
+    font-size: 1.6rem;
+    animation: bob 2s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes bob{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(10px); }
+  }
+
+  /* ---------- MEMORIES ---------- */
+  .memories{
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+  }
+
+  .memories h2{
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom: 2.5rem;
+  }
+
+  .polaroid-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .polaroid{
+    background: white;
+    width: 220px;
+    padding: 14px 14px 40px;
+    box-shadow: 0 10px 25px rgba(36,22,35,0.15);
+    transform: rotate(var(--r, 0deg));
+    transition: transform 0.25s ease;
+    margin: 0;
+    position: relative;
+  }
+
+  .polaroid:hover{
+    transform: rotate(0deg) scale(1.05);
+    z-index: 5;
+  }
+
+  .polaroid img{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #eee;
+  }
+
+  .polaroid .placeholder{
+    display: none;
+    width: 100%;
+    height: 220px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #FFE8B0, #FFD6E0);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--grape);
+    text-align: center;
+    gap: 0.4rem;
+  }
+
+  .polaroid.no-photo img{ display: none; }
+  .polaroid.no-photo .placeholder{ display: flex; }
+
+  .polaroid figcaption{
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    color: var(--ink);
+  }
+
+  /* ---------- CAKE ---------- */
+  .cake-section{
+    padding: 4rem 1.5rem 6rem;
+    text-align: center;
+    background: linear-gradient(180deg, var(--cream), #FDEFE0);
+  }
+
+  .cake-section h2{
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+
+  .cake-instructions{
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .cake-wrap{
+    display: flex;
+    justify-content: center;
+  }
+
+  .candle{ cursor: pointer; }
+  .candle .flame{ transition: opacity 0.2s ease, transform 0.2s ease; transform-origin: center bottom; }
+  .candle.out .flame{ opacity: 0; transform: scaleY(0.2); }
+  .candle .smoke{ opacity: 0; }
+  .candle.out .smoke{ animation: puff 1s ease-out forwards; }
+
+  @keyframes puff{
+    0%{ opacity: 0.6; transform: translateY(0) scale(0.6); }
+    100%{ opacity: 0; transform: translateY(-30px) scale(1.4); }
+  }
+
+  .wish-wrap{
+    max-width: 480px;
+    margin: 2.5rem auto 0;
+    min-height: 40px;
+  }
+
+  .wish-message{
+    background: white;
+    border: 2px dashed var(--grape);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .wish-message.show{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .wish-message[hidden]{ display: block; visibility: hidden; }
+  .wish-message.show[hidden]{ visibility: visible; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    padding: 5rem 1.5rem 6rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .closing p{
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .closing .no-pressure{
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    opacity: 0.65;
+    margin-top: 1.5rem;
+  }
+
+  .signoff{
+    margin-top: 2.5rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    color: var(--pink);
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .confetti-piece, .balloon, .scroll-hint{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div id="confettiLayer"></div>
+  <div id="balloonLayer"></div>
+  <span class="eyebrow">a small site, made for one person</span>
+  <h1 class="headline">Happy Birthday,<br><span class="name">Sasha</span> 🎉</h1>
+  <p class="subtitle">// scroll down, I made you something</p>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<section class="memories">
+  <h2>a few of my favorite moments</h2>
+  <div class="polaroid-row">
+    <figure class="polaroid" style="--r:-6deg">
+      <img src="images/memory1.jpg" alt="memory one" onerror="this.closest('.polaroid').classList.add('no-photo')">
+      <div class="placeholder">📸<br>add a photo</div>
+      <figcaption>caption text — edit me</figcaption>
+    </figure>
+    <figure class="polaroid" style="--r:4deg">
+      <img src="images/memory2.jpg" alt="memory two" onerror="this.closest('.polaroid').classList.add('no-photo')">
+      <div class="placeholder">📸<br>add a photo</div>
+      <figcaption>caption text — edit me</figcaption>
+    </figure>
+    <figure class="polaroid" style="--r:-3deg">
+      <img src="images/memory3.jpg" alt="memory three" onerror="this.closest('.polaroid').classList.add('no-photo')">
+      <div class="placeholder">📸<br>add a photo</div>
+      <figcaption>caption text — edit me</figcaption>
+    </figure>
+    <figure class="polaroid" style="--r:5deg">
+      <img src="images/memory4.jpg" alt="memory four" onerror="this.closest('.polaroid').classList.add('no-photo')">
+      <div class="placeholder">📸<br>add a photo</div>
+      <figcaption>caption text — edit me</figcaption>
+    </figure>
+    <figure class="polaroid" style="--r:-5deg">
+      <img src="images/memory5.jpg" alt="memory five" onerror="this.closest('.polaroid').classList.add('no-photo')">
+      <div class="placeholder">📸<br>add a photo</div>
+      <figcaption>caption text — edit me</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="cake-section">
+  <h2>make a wish</h2>
+  <p class="cake-instructions">click each candle to blow it out</p>
+  <div class="cake-wrap">
+    <svg width="280" height="220" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- plate -->
+      <ellipse cx="140" cy="205" rx="120" ry="10" fill="#F2D9C7"/>
+      <!-- cake bottom tier -->
+      <rect x="30" y="140" width="220" height="55" rx="10" fill="#7B2CBF"/>
+      <rect x="30" y="140" width="220" height="14" rx="7" fill="#9146D6"/>
+      <!-- cake top tier -->
+      <rect x="65" y="95" width="150" height="50" rx="10" fill="#FF6F91"/>
+      <rect x="65" y="95" width="150" height="14" rx="7" fill="#FF93AC"/>
+      <!-- sprinkles -->
+      <circle cx="55" cy="165" r="3" fill="#FFA630"/>
+      <circle cx="90" cy="175" r="3" fill="#2EC4B6"/>
+      <circle cx="150" cy="168" r="3" fill="#FFE8B0"/>
+      <circle cx="200" cy="172" r="3" fill="#2EC4B6"/>
+      <circle cx="230" cy="160" r="3" fill="#FFA630"/>
+      <!-- candles -->
+      <g class="candle" data-idx="0" transform="translate(90,55)">
+        <rect x="-4" y="10" width="8" height="34" rx="3" fill="#FFF3B0"/>
+        <g class="flame">
+          <path d="M0 -6 C 6 2, 4 8, 0 10 C -4 8, -6 2, 0 -6 Z" fill="#FFA630"/>
+        </g>
+        <circle class="smoke" cx="0" cy="-10" r="4" fill="#ccc"/>
+      </g>
+      <g class="candle" data-idx="1" transform="translate(140,45)">
+        <rect x="-4" y="10" width="8" height="34" rx="3" fill="#FFF3B0"/>
+        <g class="flame">
+          <path d="M0 -6 C 6 2, 4 8, 0 10 C -4 8, -6 2, 0 -6 Z" fill="#FFA630"/>
+        </g>
+        <circle class="smoke" cx="0" cy="-10" r="4" fill="#ccc"/>
+      </g>
+      <g class="candle" data-idx="2" transform="translate(190,55)">
+        <rect x="-4" y="10" width="8" height="34" rx="3" fill="#FFF3B0"/>
+        <g class="flame">
+          <path d="M0 -6 C 6 2, 4 8, 0 10 C -4 8, -6 2, 0 -6 Z" fill="#FFA630"/>
+        </g>
+        <circle class="smoke" cx="0" cy="-10" r="4" fill="#ccc"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wish-wrap">
+    <div class="wish-message" id="wishMessage" hidden></div>
+  </div>
+</section>
+
+<section class="closing">
+  <p>
+    <!-- CLOSING_MESSAGE — edit this paragraph to sound like you -->
+    I've been thinking about you, and today felt like the right day to say it out loud:
+    happy birthday. I hope it's a genuinely good one — the kind with your favorite food,
+    people who make you laugh, and nothing you feel like you have to do.
+  </p>
+  <p class="no-pressure">
+    no pressure attached to any of this — I just wanted today to have a little extra sparkle.
+  </p>
+  <span class="signoff">— made with care</span>
+</section>
+
+<script>
+  // ---------- confetti ----------
+  const colors = ['#FF6F91', '#FFA630', '#2EC4B6', '#7B2CBF', '#FFE8B0'];
+  const confettiLayer = document.getElementById('confettiLayer');
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (6 + Math.random() * 6) + 's';
+    piece.style.animationDelay = (Math.random() * 8) + 's';
+    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+    confettiLayer.appendChild(piece);
+  }
+
+  // ---------- balloons ----------
+  const balloonLayer = document.getElementById('balloonLayer');
+  const balloonColors = ['#FF6F91', '#FFA630', '#2EC4B6', '#7B2CBF'];
+  for (let i = 0; i < 8; i++) {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.left = (5 + i * 12 + Math.random() * 5) + 'vw';
+    b.style.background = balloonColors[i % balloonColors.length];
+    b.style.animationDuration = (14 + Math.random() * 8) + 's';
+    b.style.animationDelay = (Math.random() * 10) + 's';
+    balloonLayer.appendChild(b);
+  }
+
+  // ---------- candles ----------
+  const candles = document.querySelectorAll('.candle');
+  const wishMessage = document.getElementById('wishMessage');
+
+  // EDIT ME — the message revealed once every candle is blown out
+  const WISH_MESSAGE = "If wishes still count for anything: I wished that whatever happens next between us, you're happy — and that if you ever want to catch up, the door's open on my end. That's it. That's the whole wish.";
+
+  let blownOut = 0;
+  candles.forEach(candle => {
+    candle.addEventListener('click', () => {
+      if (candle.classList.contains('out')) return;
+      candle.classList.add('out');
+      blownOut++;
+      if (blownOut === candles.length) {
+        wishMessage.textContent = WISH_MESSAGE;
+        wishMessage.hidden = false;
+        requestAnimationFrame(() => {
+          wishMessage.classList.add('show');
+          wishMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
